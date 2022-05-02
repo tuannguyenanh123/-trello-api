@@ -1,20 +1,33 @@
 import express from "express";
 
-import { connectDB } from "*/config/mongodb.js";
-import { mapOrder } from "*/utilities/Sort.js";
+import { connectDB,getDB } from "./config/mongodb.js";
 import { env } from "./config/environtment.js";
+import { BoardModel } from "./models/board.model.js";
 
-const app = express();
 
-const hostName = env.HOST_NAME;
-const port = env.PORT;
+const hostName = env.APP_HOST_NAME;
+const port = env.APP_PORT;
 
-connectDB().catch(console.log);
+connectDB()
+    .then(() => {
+      console.log("connected success to database server");
+    })
+    .then(() => bootServer())
+    .catch(error => {
+      console.log(error);
+      process.exit(1)
+    })
 
-app.get("/", (req, res) => {
-  res.end("<h1>Hello world!</h1><hr/>");
-});
 
-app.listen(port, hostName, () => {
-  console.log(`hello candy dev, im running at ${hostName}: ${port}`);
-});
+const bootServer = () => {
+  const app = express();
+  app.get("/test", async (req, res) => {
+   
+    res.end("<h1>Hello world!</h1><hr/>");
+  });
+  app.listen(port, hostName, () => {
+    console.log(`hello candy dev, im running at ${hostName}: ${port}`);
+  });
+  
+  
+}
