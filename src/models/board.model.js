@@ -1,4 +1,6 @@
 import Joi from "joi"
+import { ObjectId } from "mongodb"
+
 import {getDB} from "./../config/mongodb"
 
 // define board collection
@@ -21,10 +23,10 @@ const createNew = async (data) => {
     try {
         const value = await validateSchema(data)
         const result = await getDB().collection(boardCollectionName).insertOne(value); // sau khi validate data khoong bi error thi moi insert vao database
-        console.log(result);
-        return result;
+        console.log(result.ops[0]);
+        return result.ops[0];
     } catch (error) {
-        console.log(error);
+        throw new Error(error)
     }
 }
 
