@@ -1,9 +1,11 @@
 import Joi from "joi"
-import {HttpStatusCode } from './../utilities/Constants'
+import {HttpStatusCode,propertiesCard } from '../utilities/Constants'
 
 const createNew = async (req, res,next) => {
     const condition = Joi.object({
-        title: Joi.string().required().min(3).max(20).trim(),
+        boardId: Joi.string().required(),
+        columnId: Joi.string().required(),
+        title: Joi.string().required().min(propertiesCard.MIN_CARD_LENGTH).max(propertiesCard.MAX_CARD_LENGTH).trim(),
     })
     try {
         await condition.validateAsync(req.body,{abortEarly: false})
@@ -15,4 +17,8 @@ const createNew = async (req, res,next) => {
     }
 }
 
-export const boardValidation = {createNew}
+
+export const cardValidation = {createNew}
+
+
+
